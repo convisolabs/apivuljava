@@ -3,11 +3,20 @@ package conviso.treinamento.apivuljava.controller;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+import java.util.List;
 
+import org.apache.logging.log4j.Logger;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import conviso.treinamento.apivuljava.model.Login;
+import conviso.treinamento.apivuljava.repository.UserRepository;
 
 @RequestMapping("/api/util")
 @RestController
@@ -62,4 +71,13 @@ public class Util {
     public String GetHash(@RequestBody String value) throws NoSuchAlgorithmException{
         return getMD5(value);
     }      
+
+	@PostMapping("/login")
+	@ResponseBody
+    public ResponseEntity<List<Login>> Login(@RequestBody Login login) throws SQLException{
+
+
+        return ResponseEntity.ok(UserRepository.selectAll(login));
+
+    }        
 }
